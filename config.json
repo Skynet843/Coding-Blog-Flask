@@ -1,0 +1,13 @@
+{
+    "params":{
+        "local_uri":"mysql+pymysql://root:@localhost:3306/code_blog",
+        "prod_uri":"mysql+pymysql://root:@localhost:3306/code_blog",
+        "local_server":"True",
+        "main_heading":"Coding Blog",
+        "sub_heading":"Blog Liked by Best Coders",
+        "gmail-user":"stcsouvik@gmail.com",
+        "gmail-password":"souvikskynet@",
+        "no-of-post":5
+
+    }
+}
