@@ -79,4 +79,4 @@ def post_route(post_slug):
     postData=posts.query.filter_by(pslug=post_slug).first()
     return render_template('post.html',params=configData,post=postData)
 
-app.run(port=80,debug=True,host="192.168.0.105")
+app.run(port=80,debug=True)
