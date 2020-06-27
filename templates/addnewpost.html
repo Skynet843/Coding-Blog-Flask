@@ -1,0 +1,71 @@
+{% extends "layout_admin_panel.html" %}
+{% block body %}
+<h1 class=" text-capitalize text-primary text-center mt-3">{{params["main_heading"]}}</h1>
+        <hr class=" w-50 mx-auto">
+<section>
+    
+    <div class=" container">
+    <h3 class=" font-weight-bold text-warning">UPLOAD NEW IMAGE</h3>
+        <hr>
+        <form class=" mb-3" action="/uploadimage" method="POST" enctype="multipart/form-data">
+            <div class="custom-file">
+              <input type="file" name="image-file" class="custom-file-input" id="customFile">
+              <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <div class="form-group mt-2">
+                <label for="exampleFormControlInput1">Image Name</label>
+                <input type="text" name="image-name" class="form-control" id="exampleFormControlInput1" placeholder="Ex:test-image.jpg">
+              </div>
+              <div class="">
+                <button type="button" class="btn btn-secondary">SHOW IMAGES</button>
+                <button type="submit"  class="btn btn-primary">UPLOAD IMAGE</button>
+              </div>
+              <hr>
+          </form>
+
+    </div>
+</section>
+<section>
+
+    <div class=" container">
+        <h3 class=" font-weight-bold text-danger">ADD NEW POST</h3>
+        <hr>
+        <form action="/addnewpost" method="POST">
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Post Title</label>
+                      <input type="text" name="post-title" class="form-control" id="exampleFormControlInput1" value="" >
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Post Slug</label>
+                        <input type="text" name="post-slug" class="form-control" id="exampleFormControlInput1" value="" >
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1">Post Subtitle</label>
+                        <input type="text" name="post-stitle" class="form-control" id="exampleFormControlInput1" value="" >
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1">Post Author</label>
+                        <input type="text" name="post-author" class="form-control" id="exampleFormControlInput1" value="" >
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1">Post Image Name</label>
+                        <input type="text" name="post-image" class="form-control" id="exampleFormControlInput1" value="" >
+                      </div>
+                
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Post Content</label>
+                      <textarea class="form-control" name="post-body" id="exampleFormControlTextarea1" rows="5"></textarea>
+                    </div>
+                    <hr>
+              <button type="submit"  class="btn btn-primary text-center mb-5">SUBMIT DATA</button>
+        </form>
+    </div>
+</section>
+
+  
+
+
+
+{% endblock %}
+
+

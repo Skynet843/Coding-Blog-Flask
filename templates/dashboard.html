@@ -1,0 +1,86 @@
+{% extends "layout_admin_panel.html" %}
+{% block body %}
+	<section>
+		<div class=" container-fluid">
+			<h1 class=" text-capitalize text-primary text-center mt-4">{{params["main_heading"]}}</h1>
+			<hr class=" w-50 mx-auto">
+			<h2 class=" text-capitalize font-weight-bold">EDIT POST</h2>
+			<table class="table table-striped">
+				<thead class=" text-white bg-primary">
+				  <tr>
+					<th scope="col">#</th>
+					<th scope="col">Post Title</th>
+					<th scope="col">Date</th>
+					<th scope="col">Author</th>
+					<th scope="col">Delete</th>
+					<th scope="col">Edit</th>
+				  </tr>
+				</thead>
+				<tbody>
+					{% for post in posts %}
+					<tr >
+						<th class="align-middle" scope="row">{{post.pid}}</th>
+						<td class="align-middle">{{post.ptitle}}</td>
+						<td class="align-middle">{{post.pdate}}</td>
+						<td class="align-middle">{{post.pauthor}}</td>
+						<td class="align-middle"><a class=" btn bg-danger text-white" href="/delete">Delete</a></td>
+						<td class="align-middle"><button class=" btn bg-warning text-white" type="button" data-toggle="modal" data-target="#{{post.pslug}}">Edit</button></td>
+						<!-- Modal -->
+<div class="modal fade" id="{{post.pslug}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLongTitle">Edit Post</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<form action="/edit-post/{{post.pid}}" method="POST">
+		<div class="modal-body">
+				<div class="form-group">
+				  <label for="exampleFormControlInput1">Post Title</label>
+				  <input type="text" name="post-title" class="form-control" id="exampleFormControlInput1" value="{{post.ptitle}}" >
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlInput1">Post Slug</label>
+					<input type="text" name="post-slug" class="form-control" id="exampleFormControlInput1" value="{{post.pslug}}" >
+				  </div>
+				  <div class="form-group">
+					<label for="exampleFormControlInput1">Post Subtitle</label>
+					<input type="text" name="post-stitle" class="form-control" id="exampleFormControlInput1" value="{{post.pstitle}}" >
+				  </div>
+				  <div class="form-group">
+					<label for="exampleFormControlInput1">Post Author</label>
+					<input type="text" name="post-author" class="form-control" id="exampleFormControlInput1" value="{{post.pauthor}}" >
+				  </div>
+				  <div class="form-group">
+					<label for="exampleFormControlInput1">Post Image Name</label>
+					<input type="text" name="post-image" class="form-control" id="exampleFormControlInput1" value="{{post.pimage}}" >
+				  </div>
+			
+				<div class="form-group">
+				  <label for="exampleFormControlTextarea1">Post Content</label>
+				  <textarea class="form-control" name="post-body" id="exampleFormControlTextarea1" rows="10">{{post.pbody}}</textarea>
+				</div>
+			  
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <button type="submit"  class="btn btn-primary">Save changes</button>
+		</div>
+	</form>
+	  </div>
+	</div>
+  </div>
+					  </tr>
+				{% endfor %}
+				</tbody>
+			  </table>
+		</div>
+	</section>
+	{% endblock %}
+
+	
+
+
+

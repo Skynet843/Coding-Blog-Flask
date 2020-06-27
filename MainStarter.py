@@ -1,8 +1,9 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,session,redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_mail import Mail
 import json
+import os
 
 # Get cofig json
 file=open('config.json','r')
@@ -10,6 +11,7 @@ configData=json.loads(file.read())["params"]
 file.close()
 # Create app object
 app = Flask(__name__)
+app.secret_key='super-secret-key'
 
 # Configure for sending main
 app.config.update(
@@ -19,6 +21,7 @@ app.config.update(
     MAIL_USERNAME = configData['gmail-user'],
     MAIL_PASSWORD=  configData['gmail-password']
 )
+app.config['UPLOAD_FOLDER']=configData["upload_folder"]
 mail=Mail(app)
 # Create database obj
 if configData["local_server"]:
@@ -69,9 +72,9 @@ def contact():
         tdate=datetime.now()
         entry=Contacts(name=name,email=email,phone=phone,message=message,Adate=tdate)
         #setup mail
-        mail.send_message(f'New Message from {name}',sender=email,recipients=[configData['gmail-user']],body=f'{message}\n Phone No.:{phone}')
         db.session.add(entry)
         db.session.commit()
+        # mail.send_message(f'New Message from {name}',sender=email,recipients=[configData['gmail-user']],body=f'{message}\n Phone No.:{phone}')
     return render_template('contact.html',params=configData)
 
 @app.route('/post/<string:post_slug>',methods=['GET'])
@@ -79,4 +82,73 @@ def post_route(post_slug):
     postData=posts.query.filter_by(pslug=post_slug).first()
     return render_template('post.html',params=configData,post=postData)
 
-app.run(port=80,debug=True)
+@app.route('/dashboard',methods=['GET','POST'])
+def admin():
+    if 'user' in session and session['user']==configData['admin-user']:
+        post=posts.query.filter_by().all()
+        return render_template('dashboard.html',params=configData,posts=post)
+    else:
+        if request.method=='POST':
+            passw=str(request.form.get('password'))
+            user=str(request.form.get('username'))
+            remember=request.form.get('remember_me')
+            print(remember)
+            if passw==configData['admin-password'] and user==configData['admin-user']:
+                session['user']=user
+                post=posts.query.filter_by().all()
+                return render_template('dashboard.html',params=configData,posts=post)
+            else:
+                return render_template('adminLogin.html')
+        else:
+            return render_template('adminLogin.html')
+@app.route('/edit-post/<string:post_id>', methods=['POST'])
+def edit(post_id):
+    if 'user' in session and session['user']==configData['admin-user']:
+        title=request.form.get('post-title')
+        stitle=request.form.get('post-stitle')
+        slug=request.form.get('post-slug')
+        author=request.form.get('post-author')
+        image=request.form.get('post-image')
+        body=request.form.get('post-body')
+        post=posts.query.filter_by(pid=post_id).first()
+        post.ptitle=title
+        post.pslug = slug
+        post.pauthor=author
+        post.pimage=image
+        post.pbody=body
+        post.pstitle=stitle
+        
+        db.session.commit()
+    return redirect('/dashboard')
+
+@app.route('/addnewpost',methods=['POST','GET'])
+def addnewpost():
+    flag='False'
+    if request.method == "POST":
+        if 'user' in session and session['user']==configData['admin-user']:
+            title=request.form.get('post-title')
+            stitle=request.form.get('post-stitle')
+            slug=request.form.get('post-slug')
+            author=request.form.get('post-author')
+            image=request.form.get('post-image')
+            body=request.form.get('post-body')
+            tdate=datetime.now()
+            new_post=posts(ptitle=title,pstitle=stitle,pslug=slug,pauthor=author,pimage=image,pbody=body,pdate=tdate)
+            db.session.add(new_post)
+            db.session.commit()
+            flag='True'
+            
+    return render_template('addnewpost.html',params=configData,flag=flag)
+        
+@app.route('/uploadimage',methods=['POST'])
+def uploadimage():
+    if 'user' in session and session['user']==configData['admin-user']:
+        if request.method=='POST':
+            f=request.files['image-file']
+            fname=request.form.get('image-name')
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'],fname))
+            return redirect('/addnewpost')
+
+            
+
+app.run(debug=True)

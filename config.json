@@ -7,7 +7,11 @@
         "sub_heading":"Blog Liked by Best Coders",
         "gmail-user":"stcsouvik@gmail.com",
         "gmail-password":"souvikskynet@",
-        "no-of-post":5
+        "no-of-post":5,
+        "admin-user":"admin",
+        "admin-password":"admin",
+        "upload_folder":"F:\\Desktop\\Python\\Python flask\\Coding-Blog-Flask\\static\\img"
+
 
     }
 }
