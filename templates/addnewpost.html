@@ -14,11 +14,11 @@
             </div>
             <div class="form-group mt-2">
                 <label for="exampleFormControlInput1">Image Name</label>
-                <input type="text" name="image-name" class="form-control" id="exampleFormControlInput1" placeholder="Ex:test-image.jpg">
+                <input type="text" id="imageName" name="image-name" class="form-control" id="exampleFormControlInput1" placeholder="Ex:test-image.jpg">
               </div>
               <div class="">
                 <button type="button" class="btn btn-secondary">SHOW IMAGES</button>
-                <button type="submit"  class="btn btn-primary">UPLOAD IMAGE</button>
+                <button type="submit"  class="btn btn-primary" onclick="uploadImage()">UPLOAD IMAGE</button>
               </div>
               <hr>
           </form>
@@ -30,34 +30,34 @@
     <div class=" container">
         <h3 class=" font-weight-bold text-danger">ADD NEW POST</h3>
         <hr>
-        <form action="/addnewpost" method="POST">
+        <form action="/addnewpost" method="POST" id="addNewPostForm">
                     <div class="form-group">
-                      <label for="exampleFormControlInput1">Post Title</label>
-                      <input type="text" name="post-title" class="form-control" id="exampleFormControlInput1" value="" >
+                      <label for="post-title">Post Title</label>
+                      <input type="text" name="post-title" class="form-control" id="post-title" value="" >
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Post Slug</label>
-                        <input type="text" name="post-slug" class="form-control" id="exampleFormControlInput1" value="" >
+                        <label for="post-slug">Post Slug</label>
+                        <input type="text" name="post-slug" class="form-control" id="post-slug" value="" >
                       </div>
                       <div class="form-group">
-                        <label for="exampleFormControlInput1">Post Subtitle</label>
-                        <input type="text" name="post-stitle" class="form-control" id="exampleFormControlInput1" value="" >
+                        <label for="post-stitle">Post Subtitle</label>
+                        <input type="text" name="post-stitle" class="form-control" id="post-stitle" value="" >
                       </div>
                       <div class="form-group">
-                        <label for="exampleFormControlInput1">Post Author</label>
-                        <input type="text" name="post-author" class="form-control" id="exampleFormControlInput1" value="" >
+                        <label for="post-author">Post Author</label>
+                        <input type="text" name="post-author" class="form-control" id="post-author" value="" >
                       </div>
                       <div class="form-group">
-                        <label for="exampleFormControlInput1">Post Image Name</label>
-                        <input type="text" name="post-image" class="form-control" id="exampleFormControlInput1" value="" >
+                        <label for="post-image">Post Image Name</label>
+                        <input type="text" name="post-image" class="form-control" id="post-image" value="" >
                       </div>
                 
                     <div class="form-group">
-                      <label for="exampleFormControlTextarea1">Post Content</label>
-                      <textarea class="form-control" name="post-body" id="exampleFormControlTextarea1" rows="5"></textarea>
+                      <label for="post-body">Post Content</label>
+                      <textarea class="form-control" name="post-body" id="post-body" rows="5"></textarea>
                     </div>
                     <hr>
-              <button type="submit"  class="btn btn-primary text-center mb-5">SUBMIT DATA</button>
+              <button type="submit" id="addNewPostBTN" class="btn btn-primary text-center mb-5">SUBMIT DATA</button>
         </form>
     </div>
 </section>
