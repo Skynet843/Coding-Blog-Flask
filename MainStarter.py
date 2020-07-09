@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,session,redirect
+from flask import Flask,render_template,request,session,redirect,Response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_mail import Mail
@@ -103,6 +103,7 @@ def admin():
             return render_template('adminLogin.html')
 @app.route('/edit-post/<string:post_id>', methods=['POST'])
 def edit(post_id):
+    print("Run")
     if 'user' in session and session['user']==configData['admin-user']:
         title=request.form.get('post-title')
         stitle=request.form.get('post-stitle')
@@ -119,11 +120,12 @@ def edit(post_id):
         post.pstitle=stitle
         
         db.session.commit()
+        
     return redirect('/dashboard')
 
 @app.route('/addnewpost',methods=['POST','GET'])
 def addnewpost():
-    flag='False'
+    print("Start the add new")
     if request.method == "POST":
         if 'user' in session and session['user']==configData['admin-user']:
             title=request.form.get('post-title')
@@ -136,9 +138,15 @@ def addnewpost():
             new_post=posts(ptitle=title,pstitle=stitle,pslug=slug,pauthor=author,pimage=image,pbody=body,pdate=tdate)
             db.session.add(new_post)
             db.session.commit()
-            flag='True'
+            return Response(status=200)
+        else:
+            return Response(status=201)
+    else:
+        return render_template('addnewpost.html',params=configData)
+
+
             
-    return render_template('addnewpost.html',params=configData,flag=flag)
+    
         
 @app.route('/uploadimage',methods=['POST'])
 def uploadimage():
@@ -149,6 +157,20 @@ def uploadimage():
             f.save(os.path.join(app.config['UPLOAD_FOLDER'],fname))
             return redirect('/addnewpost')
 
-            
+@app.route('/deletePost',methods=['POST'])
+def deletePost():
+    print("RUN")
+    if 'user' in session and session['user']==configData['admin-user']:
+        if request.method=='POST':
+            post_id=request.form.get('post-id')
+            post=posts.query.filter_by(pid=post_id).first()
+            db.session.delete(post)
+            db.session.commit()
+            return Response(status=200)
+        else :
+            return Response(status=400)
+    else:
+        return Response(status=400)
+ 
 
 app.run(debug=True)
